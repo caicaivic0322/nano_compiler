@@ -49,6 +49,11 @@ build_script:
   - cmake ..\nanoPython -G "Visual Studio 17 2022" -A x64 -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=%QTDIR%
   - cmake --build . --config Release
   - cd ..
+  # 检查生成的文件
+  - echo "Checking build outputs..."
+  - dir build-nanoC++ /s
+  - dir build-nanoPython /s
+  # 部署 Qt 依赖
   - windeployqt build-nanoC++\Release\nanoC++.exe --release
   - windeployqt build-nanoPython\Release\nanoPython.exe --release
 
@@ -57,19 +62,24 @@ after_build:
   - cd
   # 列出目录结构
   - dir
+  # 再次检查 build 目录
+  - echo "Contents of build-nanoC++:"
+  - dir build-nanoC++ /s
+  - echo "Contents of build-nanoPython:"
+  - dir build-nanoPython /s
   # 创建发布目录
   - mkdir deploy
   - mkdir deploy\nanoC++
   - mkdir deploy\nanoPython
-  # 复制文件（使用完整路径）
-  - copy C:\projects\nano-compiler\build-nanoC++\Release\nanoC++.exe C:\projects\nano-compiler\deploy\nanoC++\
-  - copy C:\projects\nano-compiler\build-nanoPython\Release\nanoPython.exe C:\projects\nano-compiler\deploy\nanoPython\
-  # 复制整个 Release 目录
-  - xcopy /E /I /Y C:\projects\nano-compiler\build-nanoC++\Release C:\projects\nano-compiler\deploy\nanoC++
-  - xcopy /E /I /Y C:\projects\nano-compiler\build-nanoPython\Release C:\projects\nano-compiler\deploy\nanoPython
+  # 查找并复制 exe 文件（使用通配符）
+  - for /r build-nanoC++ %%i in (*.exe) do copy "%%i" deploy\nanoC++\
+  - for /r build-nanoPython %%i in (*.exe) do copy "%%i" deploy\nanoPython\
+  # 复制所有依赖文件
+  - for /r build-nanoC++ %%i in (*.dll) do copy "%%i" deploy\nanoC++\
+  - for /r build-nanoPython %%i in (*.dll) do copy "%%i" deploy\nanoPython\
   # 验证复制结果
-  - dir deploy\nanoC++
-  - dir deploy\nanoPython
+  - echo "Contents of deploy:"
+  - dir deploy /s
 
 artifacts:
   - path: deploy
