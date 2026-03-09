@@ -72,11 +72,11 @@ after_build:
   - mkdir deploy\nanoC++
   - mkdir deploy\nanoPython
   # 查找并复制 exe 文件（使用通配符）
-  - for /r "build-nanoC++" %i in (*.exe) do @copy /y "%~fi" "deploy\nanoC++\"
-  - for /r "build-nanoPython" %i in (*.exe) do @copy /y "%~fi" "deploy\nanoPython\"
+  - for /r "build-nanoC++" %%i in (*.exe) do @copy /y "%%~fi" "deploy\nanoC++\"
+  - for /r "build-nanoPython" %%i in (*.exe) do @copy /y "%%~fi" "deploy\nanoPython\"
   # 复制所有依赖文件
-  - for /r "build-nanoC++" %i in (*.dll) do @copy /y "%~fi" "deploy\nanoC++\"
-  - for /r "build-nanoPython" %i in (*.dll) do @copy /y "%~fi" "deploy\nanoPython\"
+  - for /r "build-nanoC++" %%i in (*.dll) do @copy /y "%%~fi" "deploy\nanoC++\"
+  - for /r "build-nanoPython" %%i in (*.dll) do @copy /y "%%~fi" "deploy\nanoPython\"
   # 验证复制结果
   - echo "Contents of deploy:"
   - dir deploy /s
