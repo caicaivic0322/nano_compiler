@@ -11,16 +11,31 @@ platform:
 configuration:
   - Release
 
-environment:
-  QTDIR: C:\Qt\6.6.3\msvc2019_64
-
 init:
   - git config --global core.autocrlf input
 
 clone_depth: 5
 
 install:
+  # 查找已安装的 Qt 版本
+  - dir C:\Qt
+  # 设置 Qt 路径（尝试多个可能的版本）
+  - if exist "C:\Qt\6.6.3\msvc2019_64\bin\qmake.exe" set QTDIR=C:\Qt\6.6.3\msvc2019_64
+  - if exist "C:\Qt\6.6.2\msvc2019_64\bin\qmake.exe" set QTDIR=C:\Qt\6.6.2\msvc2019_64
+  - if exist "C:\Qt\6.6.1\msvc2019_64\bin\qmake.exe" set QTDIR=C:\Qt\6.6.1\msvc2019_64
+  - if exist "C:\Qt\6.6.0\msvc2019_64\bin\qmake.exe" set QTDIR=C:\Qt\6.6.0\msvc2019_64
+  - if exist "C:\Qt\6.5.3\msvc2019_64\bin\qmake.exe" set QTDIR=C:\Qt\6.5.3\msvc2019_64
+  - if exist "C:\Qt\6.5.2\msvc2019_64\bin\qmake.exe" set QTDIR=C:\Qt\6.5.2\msvc2019_64
+  - if exist "C:\Qt\6.5.1\msvc2019_64\bin\qmake.exe" set QTDIR=C:\Qt\6.5.1\msvc2019_64
+  - if exist "C:\Qt\6.5.0\msvc2019_64\bin\qmake.exe" set QTDIR=C:\Qt\6.5.0\msvc2019_64
+  # 检查 Qt 5 版本
+  - if exist "C:\Qt\5.15.2\msvc2019_64\bin\qmake.exe" set QTDIR=C:\Qt\5.15.2\msvc2019_64
+  - if exist "C:\Qt\5.15.1\msvc2019_64\bin\qmake.exe" set QTDIR=C:\Qt\5.15.1\msvc2019_64
+  - if exist "C:\Qt\5.15.0\msvc2019_64\bin\qmake.exe" set QTDIR=C:\Qt\5.15.0\msvc2019_64
+  # 设置 PATH
   - set PATH=%QTDIR%\bin;%PATH%
+  # 验证 Qt
+  - echo QTDIR=%QTDIR%
   - qmake --version
 
 build_script:
