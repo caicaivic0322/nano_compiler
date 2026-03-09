@@ -13,25 +13,28 @@ build-linux:
   image: ubuntu:22.04
   before_script:
     - apt-get update -qq
-    - apt-get install -y -qq build-essential cmake qt6-base-dev libgl1-mesa-dev git
+    - apt-get install -y -qq build-essential cmake git
+    - apt-get install -y -qq qt6-base-dev qt6-base-dev-tools libqt6core6 libqt6gui6 libqt6widgets6
+    - apt-get install -y -qq libgl1-mesa-dev libglu1-mesa-dev
   script:
     # 构建 nanoC++
     - mkdir build-nanoC++
     - cd build-nanoC++
     - cmake ../nanoC++ -DCMAKE_BUILD_TYPE=Release
-    - make -j$(nproc)
+    - make -j$(nproc) 2>&1 | head -100
     - cd ..
     
     # 构建 nanoPython
     - mkdir build-nanoPython
     - cd build-nanoPython
     - cmake ../nanoPython -DCMAKE_BUILD_TYPE=Release
-    - make -j$(nproc)
+    - make -j$(nproc) 2>&1 | head -100
   artifacts:
     paths:
       - build-nanoC++/nanoC++
       - build-nanoPython/nanoPython
     expire_in: 1 week
+    when: always
   allow_failure: true
 
 # 使用 Windows 共享 Runner（如果可用）
@@ -41,20 +44,21 @@ build-windows:
     - shared-windows
     - windows
   before_script:
-    - choco install qt6-default -y
+    - choco install cmake -y
   script:
     - mkdir build-nanoC++
     - cd build-nanoC++
     - cmake ../nanoC++ -G "Visual Studio 17 2022" -A x64
-    - cmake --build . --config Release
+    - cmake --build . --config Release 2>&1 | head -100
     - cd ..
     - mkdir build-nanoPython
     - cd build-nanoPython
     - cmake ../nanoPython -G "Visual Studio 17 2022" -A x64
-    - cmake --build . --config Release
+    - cmake --build . --config Release 2>&1 | head -100
   artifacts:
     paths:
       - build-nanoC++/Release/
       - build-nanoPython/Release/
     expire_in: 1 week
+    when: always
   allow_failure: true
