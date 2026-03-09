@@ -53,13 +53,19 @@ build_script:
   - windeployqt build-nanoPython/Release/nanoPython.exe --release
 
 after_build:
+  # 列出目录结构查看实际路径
+  - dir build-nanoC++ /s
+  - dir build-nanoPython /s
+  # 创建发布目录
   - mkdir deploy
   - mkdir deploy\nanoC++
   - mkdir deploy\nanoPython
-  - copy build-nanoC++\Release\nanoC++.exe deploy\nanoC++\
-  - copy build-nanoPython\Release\nanoPython.exe deploy\nanoPython\
-  - xcopy /E /I build-nanoC++\Release deploy\nanoC++
-  - xcopy /E /I build-nanoPython\Release deploy\nanoPython
+  # 复制可执行文件和依赖
+  - if exist "build-nanoC++\Release\nanoC++.exe" copy build-nanoC++\Release\nanoC++.exe deploy\nanoC++\
+  - if exist "build-nanoPython\Release\nanoPython.exe" copy build-nanoPython\Release\nanoPython.exe deploy\nanoPython\
+  # 复制整个 Release 目录内容
+  - if exist "build-nanoC++\Release" xcopy /E /I /Y build-nanoC++\Release deploy\nanoC++
+  - if exist "build-nanoPython\Release" xcopy /E /I /Y build-nanoPython\Release deploy\nanoPython
 
 artifacts:
   - path: deploy
