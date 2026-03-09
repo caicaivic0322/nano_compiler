@@ -41,6 +41,7 @@ set(SOURCES
     src/ui/toolbar.cpp
     src/ui/output_panel.cpp
     src/ui/project_panel.cpp
+    src/ui/splash_dialog.cpp
     src/utils/file_utils.cpp
 )
 
@@ -55,6 +56,7 @@ set(HEADERS
     src/ui/toolbar.h
     src/ui/output_panel.h
     src/ui/project_panel.h
+    src/ui/splash_dialog.h
     src/utils/file_utils.h
 )
 
@@ -77,7 +79,6 @@ target_link_libraries(${PROJECT_NAME}
 # 包含目录
 target_include_directories(${PROJECT_NAME} PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/src
-    ${CMAKE_CURRENT_SOURCE_DIR}/third_party/tcc
 )
 
 # Windows 特定设置

@@ -97,9 +97,9 @@ bool TabWidget::closeTab(int index)
     }
     
     // 移除标签页
-    QWidget *widget = widget(index);
+    QWidget *tabWidget = this->widget(index);
     removeTab(index);
-    delete widget;
+    delete tabWidget;
     
     // 更新剩余标签页的索引
     for (int i = 0; i < m_tabInfo.size(); ++i) {
@@ -205,7 +205,9 @@ bool TabWidget::saveTab(int index)
     }
     
     QTextStream stream(&file);
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     stream.setCodec("UTF-8");
+#endif
     stream << editor->toPlainText();
     file.close();
     
@@ -299,7 +301,7 @@ void TabWidget::updateTabTitle(int index)
     setTabToolTip(index, m_tabInfo[index].filePath.isEmpty() ? title : m_tabInfo[index].filePath);
 }
 
-QString TabWidget::generateNewTabName() const
+QString TabWidget::generateNewTabName()
 {
     return QString("未命名 %1").arg(m_newTabCounter++);
 }

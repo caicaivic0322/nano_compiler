@@ -3,5 +3,6 @@
         <file>styles/default.qss</file>
         <file>templates/hello_world.c</file>
         <file>templates/hello_world.cpp</file>
+        <file>images/me.jpg</file>
     </qresource>
 </RCC>

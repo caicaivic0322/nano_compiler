@@ -30,12 +30,13 @@ QString readFileFast(const QString &filePath, bool *ok)
     if (fileSize > 1024 * 1024) { // 大于 1MB 使用内存映射
         uchar *memory = file.map(0, fileSize);
         if (memory) {
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
             QTextCodec::ConverterState state;
             QTextCodec *codec = QTextCodec::codecForName("UTF-8");
-            QString text = codec->toUnicode(reinterpret_cast<const char*>(memory), 
+            QString text = codec->toUnicode(reinterpret_cast<const char*>(memory),
                                            static_cast<int>(fileSize), &state);
             file.unmap(memory);
-            
+
             if (state.invalidChars > 0) {
                 // 尝试其他编码
                 file.seek(0);
@@ -43,9 +44,17 @@ QString readFileFast(const QString &filePath, bool *ok)
                 stream.setAutoDetectUnicode(true);
                 text = stream.readAll();
             }
-            
+
             if (ok) *ok = true;
             return text;
+#else
+            // Qt6: 直接使用 QByteArray 和 QString
+            QByteArray data(reinterpret_cast<const char*>(memory), static_cast<int>(fileSize));
+            file.unmap(memory);
+            QString text = QString::fromUtf8(data);
+            if (ok) *ok = true;
+            return text;
+#endif
         }
     }
     

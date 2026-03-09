@@ -1,0 +1,4 @@
+# Hashes of file build rules.
+04664ffa1e8c0d0d2925cda8bb8cb754 CMakeFiles/nanoC++_autogen
+f5a41e589369ef8f5c3235363caceced nanoC++_autogen/3YJK5W5UP7/qrc_nanoC++.cpp
+39f008b43642d9fbfa4f1bb927125fb3 nanoC++_autogen/timestamp

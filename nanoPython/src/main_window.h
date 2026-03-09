@@ -12,6 +12,7 @@ class QFileSystemModel;
 class QToolBar;
 class QAction;
 class QLabel;
+class QCloseEvent;
 QT_END_NAMESPACE
 
 class TabWidget;
@@ -54,13 +55,17 @@ private:
     void setupStatusBar();
     void setupConnections();
     void loadTemplates();
-    
+
     bool maybeSave();
     bool maybeSaveAll();
     void setCurrentFile(const QString &fileName);
     void updateWindowTitle();
     void updateActions();
     CodeEditor* currentEditor() const;
+    bool saveFile(const QString &filePath, const QString &content);
+
+protected:
+    void closeEvent(QCloseEvent *event) override;
 
     // UI 组件
     TabWidget *m_tabWidget;

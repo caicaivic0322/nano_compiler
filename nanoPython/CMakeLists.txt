@@ -42,6 +42,7 @@ set(SOURCES
     src/ui/output_panel.cpp
     src/ui/project_panel.cpp
     src/ui/repl_panel.cpp
+    src/ui/splash_dialog.cpp
     src/utils/file_utils.cpp
 )
 
@@ -57,6 +58,7 @@ set(HEADERS
     src/ui/output_panel.h
     src/ui/project_panel.h
     src/ui/repl_panel.h
+    src/ui/splash_dialog.h
     src/utils/file_utils.h
 )
 

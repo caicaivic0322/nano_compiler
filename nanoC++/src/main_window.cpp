@@ -88,64 +88,94 @@ void MainWindow::setupMenuBar()
     
     // 文件菜单
     QMenu *fileMenu = menuBar->addMenu("文件(&F)");
-    
-    m_newAction = fileMenu->addAction("新建", this, &MainWindow::onNewFile, QKeySequence::New);
+
+    m_newAction = fileMenu->addAction("新建");
+    m_newAction->setShortcut(QKeySequence::New);
+    connect(m_newAction, &QAction::triggered, this, &MainWindow::onNewFile);
     m_newAction->setIcon(QIcon::fromTheme("document-new", QIcon(":/icons/new.png")));
-    
-    m_openAction = fileMenu->addAction("打开", this, &MainWindow::onOpenFile, QKeySequence::Open);
+
+    m_openAction = fileMenu->addAction("打开");
+    m_openAction->setShortcut(QKeySequence::Open);
+    connect(m_openAction, &QAction::triggered, this, &MainWindow::onOpenFile);
     m_openAction->setIcon(QIcon::fromTheme("document-open", QIcon(":/icons/open.png")));
-    
-    m_saveAction = fileMenu->addAction("保存", this, &MainWindow::onSaveFile, QKeySequence::Save);
+
+    m_saveAction = fileMenu->addAction("保存");
+    m_saveAction->setShortcut(QKeySequence::Save);
+    connect(m_saveAction, &QAction::triggered, this, &MainWindow::onSaveFile);
     m_saveAction->setIcon(QIcon::fromTheme("document-save", QIcon(":/icons/save.png")));
-    
-    m_saveAsAction = fileMenu->addAction("另存为...", this, &MainWindow::onSaveAs, QKeySequence::SaveAs);
-    
-    m_saveAllAction = fileMenu->addAction("保存全部", this, &MainWindow::onSaveAll, QKeySequence("Ctrl+Shift+S"));
-    
-    m_closeTabAction = fileMenu->addAction("关闭标签页", this, &MainWindow::onCloseTab, QKeySequence("Ctrl+W"));
-    
+
+    m_saveAsAction = fileMenu->addAction("另存为...");
+    m_saveAsAction->setShortcut(QKeySequence::SaveAs);
+    connect(m_saveAsAction, &QAction::triggered, this, &MainWindow::onSaveAs);
+
+    m_saveAllAction = fileMenu->addAction("保存全部");
+    m_saveAllAction->setShortcut(QKeySequence("Ctrl+Shift+S"));
+    connect(m_saveAllAction, &QAction::triggered, this, &MainWindow::onSaveAll);
+
+    m_closeTabAction = fileMenu->addAction("关闭标签页");
+    m_closeTabAction->setShortcut(QKeySequence("Ctrl+W"));
+    connect(m_closeTabAction, &QAction::triggered, this, &MainWindow::onCloseTab);
+
     fileMenu->addSeparator();
-    fileMenu->addAction("退出", this, &QWidget::close, QKeySequence::Quit);
+    QAction *exitAction = fileMenu->addAction("退出");
+    exitAction->setShortcut(QKeySequence::Quit);
+    connect(exitAction, &QAction::triggered, this, &QWidget::close);
     
     // 编辑菜单
     QMenu *editMenu = menuBar->addMenu("编辑(&E)");
-    m_undoAction = editMenu->addAction("撤销", nullptr, QKeySequence::Undo);
-    m_redoAction = editMenu->addAction("重做", nullptr, QKeySequence::Redo);
+    m_undoAction = editMenu->addAction("撤销");
+    m_undoAction->setShortcut(QKeySequence::Undo);
+    m_redoAction = editMenu->addAction("重做");
+    m_redoAction->setShortcut(QKeySequence::Redo);
     editMenu->addSeparator();
-    m_cutAction = editMenu->addAction("剪切", nullptr, QKeySequence::Cut);
-    m_copyAction = editMenu->addAction("复制", nullptr, QKeySequence::Copy);
-    m_pasteAction = editMenu->addAction("粘贴", nullptr, QKeySequence::Paste);
-    
+    m_cutAction = editMenu->addAction("剪切");
+    m_cutAction->setShortcut(QKeySequence::Cut);
+    m_copyAction = editMenu->addAction("复制");
+    m_copyAction->setShortcut(QKeySequence::Copy);
+    m_pasteAction = editMenu->addAction("粘贴");
+    m_pasteAction->setShortcut(QKeySequence::Paste);
+
     // 视图菜单
     QMenu *viewMenu = menuBar->addMenu("视图(&V)");
-    QAction *collapseAllAction = viewMenu->addAction("折叠全部", this, [this]() {
+    QAction *collapseAllAction = viewMenu->addAction("折叠全部");
+    collapseAllAction->setShortcut(QKeySequence("Ctrl+Shift+A"));
+    connect(collapseAllAction, &QAction::triggered, this, [this]() {
         if (currentEditor()) currentEditor()->collapseAll();
-    }, QKeySequence("Ctrl+Shift+A"));
-    
-    QAction *expandAllAction = viewMenu->addAction("展开全部", this, [this]() {
+    });
+
+    QAction *expandAllAction = viewMenu->addAction("展开全部");
+    expandAllAction->setShortcut(QKeySequence("Ctrl+Shift+E"));
+    connect(expandAllAction, &QAction::triggered, this, [this]() {
         if (currentEditor()) currentEditor()->expandAll();
-    }, QKeySequence("Ctrl+Shift+E"));
-    
+    });
+
     viewMenu->addSeparator();
-    QAction *toggleFoldAction = viewMenu->addAction("折叠/展开当前块", this, [this]() {
+    QAction *toggleFoldAction = viewMenu->addAction("折叠/展开当前块");
+    toggleFoldAction->setShortcut(QKeySequence("Ctrl+Shift+F"));
+    connect(toggleFoldAction, &QAction::triggered, this, [this]() {
         if (currentEditor()) {
             int currentLine = currentEditor()->textCursor().blockNumber();
             currentEditor()->toggleFold(currentLine);
         }
-    }, QKeySequence("Ctrl+Shift+F"));
-    
+    });
+
     // 运行菜单
     QMenu *runMenu = menuBar->addMenu("运行(&R)");
-    m_runAction = runMenu->addAction("运行", this, &MainWindow::onRun, QKeySequence("Ctrl+R"));
+    m_runAction = runMenu->addAction("运行");
+    m_runAction->setShortcut(QKeySequence("Ctrl+R"));
+    connect(m_runAction, &QAction::triggered, this, &MainWindow::onRun);
     m_runAction->setIcon(QIcon::fromTheme("media-playback-start", QIcon(":/icons/run.png")));
-    
-    m_stopAction = runMenu->addAction("停止", this, &MainWindow::onStop, QKeySequence("Ctrl+Shift+F5"));
+
+    m_stopAction = runMenu->addAction("停止");
+    m_stopAction->setShortcut(QKeySequence("Ctrl+Shift+F5"));
+    connect(m_stopAction, &QAction::triggered, this, &MainWindow::onStop);
     m_stopAction->setIcon(QIcon::fromTheme("media-playback-stop", QIcon(":/icons/stop.png")));
     m_stopAction->setEnabled(false);
-    
+
     // 帮助菜单
     QMenu *helpMenu = menuBar->addMenu("帮助(&H)");
-    helpMenu->addAction("关于", this, &MainWindow::onAbout);
+    QAction *aboutAction = helpMenu->addAction("关于");
+    connect(aboutAction, &QAction::triggered, this, &MainWindow::onAbout);
 }
 
 void MainWindow::setupToolBar()

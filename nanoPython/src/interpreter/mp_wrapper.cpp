@@ -159,7 +159,9 @@ void MpWrapper::execute(const QString &filePath, const QString &sourceCode)
     }
     
     QTextStream stream(&sourceFile);
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     stream.setCodec("UTF-8");
+#endif
     stream << sourceCode;
     sourceFile.close();
     

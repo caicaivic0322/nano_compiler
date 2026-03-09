@@ -1,0 +1,4 @@
+# Hashes of file build rules.
+c518e7733e9f6fba1980625eeb3f5862 CMakeFiles/nanoPython_autogen
+0707eae8429b1bd08fb3b95fcd9ee4a5 nanoPython_autogen/3YJK5W5UP7/qrc_nanoPython.cpp
+e3652aa556f64ea67f70cde5660e75be nanoPython_autogen/timestamp

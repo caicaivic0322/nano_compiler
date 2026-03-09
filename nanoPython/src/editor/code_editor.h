@@ -3,6 +3,7 @@
 
 #include <QPlainTextEdit>
 #include <QObject>
+#include <QTextBlock>
 
 class SyntaxHighlighter;
 class CodeFolding;
@@ -22,7 +23,9 @@ public:
 
     void lineNumberAreaPaintEvent(QPaintEvent *event);
     int lineNumberAreaWidth();
-
+    
+    void setFileType(const QString &extension);
+    
     // 代码折叠相关
     void toggleFold(int line);
     void collapseAll();
@@ -30,6 +33,12 @@ public:
     bool isLineFolded(int line) const;
     bool canFoldLine(int line) const;
     CodeFolding* folding() const { return m_folding; }
+    
+    // 用于 LineNumberArea 访问的公共接口
+    QTextBlock getFirstVisibleBlock() const { return firstVisibleBlock(); }
+    QRectF getBlockBoundingGeometry(const QTextBlock &block) const { return blockBoundingGeometry(block); }
+    QPointF getContentOffset() const { return contentOffset(); }
+    QRectF getBlockBoundingRect(const QTextBlock &block) const { return blockBoundingRect(block); }
 
 protected:
     void resizeEvent(QResizeEvent *event) override;
@@ -45,32 +54,30 @@ private slots:
 
 private:
     void setupEditor();
+    void updateHighlighter();
     void autoIndent();
     void decreaseIndent();
     bool handleBracketMatching(QKeyEvent *event);
-
+    void insertCompletion(const QString &completion);
+    
     // 绘制折叠指示器
     void drawFoldIndicator(QPainter &painter, int line, int top);
 
     QWidget *m_lineNumberArea;
     SyntaxHighlighter *m_highlighter;
     CodeFolding *m_folding;
+    QString m_fileExtension;
 };
 
 class LineNumberArea : public QWidget
 {
 public:
-    explicit LineNumberArea(CodeEditor *editor) : QWidget(editor), m_codeEditor(editor) {}
+    explicit LineNumberArea(CodeEditor *editor);
 
-    QSize sizeHint() const override {
-        return QSize(m_codeEditor->lineNumberAreaWidth(), 0);
-    }
+    QSize sizeHint() const override;
 
 protected:
-    void paintEvent(QPaintEvent *event) override {
-        m_codeEditor->lineNumberAreaPaintEvent(event);
-    }
-
+    void paintEvent(QPaintEvent *event) override;
     void mousePressEvent(QMouseEvent *event) override;
 
 private:

@@ -58,6 +58,7 @@ public:
     
     // 检查某行是否可以折叠
     bool canFold(int line) const;
+    bool canFoldLine(int line) const { return canFold(line); }
     
     // 获取行对应的折叠状态
     bool isFolded(int line) const;
@@ -66,8 +67,8 @@ signals:
     void foldingChanged();
 
 private:
-    // 检测 C/C++ 代码块
-    void detectCppBlocks();
+    // 检测 Python 代码块
+    void detectPythonBlocks();
     
     // 检测代码块边界
     void findBlockBoundaries();

@@ -4,10 +4,10 @@
 #include <QObject>
 #include <QString>
 #include <QStringList>
+#include <QProcess>
 #include <memory>
 
 QT_BEGIN_NAMESPACE
-class QProcess;
 class QTemporaryDir;
 QT_END_NAMESPACE
 

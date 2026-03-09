@@ -58,6 +58,7 @@ public:
     
     // 检查某行是否可以折叠
     bool canFold(int line) const;
+    bool canFoldLine(int line) const { return canFold(line); }
     
     // 获取行对应的折叠状态
     bool isFolded(int line) const;

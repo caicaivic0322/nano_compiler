@@ -160,7 +160,7 @@ nano_compiler/
 ## 联系方式
 
 - GitHub: https://github.com/caicaivic0322/nano_compiler
-- 邮箱: [your-email@example.com]
+- 邮箱: [viccaizhen@gmail.com]
 
 ---
 

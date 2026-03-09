@@ -1,0 +1,2 @@
+set(__QT_DEPLOY_TARGET_nanoPython_FILE /Users/caizhen/Desktop/Dev/nano_compiler/build/nanoPython/nanoPython)
+set(__QT_DEPLOY_TARGET_nanoPython_TYPE EXECUTABLE)

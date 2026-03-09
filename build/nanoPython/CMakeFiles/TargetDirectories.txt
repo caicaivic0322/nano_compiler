@@ -1,0 +1,9 @@
+/Users/caizhen/Desktop/Dev/nano_compiler/build/nanoPython/CMakeFiles/nanoPython.dir
+/Users/caizhen/Desktop/Dev/nano_compiler/build/nanoPython/CMakeFiles/edit_cache.dir
+/Users/caizhen/Desktop/Dev/nano_compiler/build/nanoPython/CMakeFiles/rebuild_cache.dir
+/Users/caizhen/Desktop/Dev/nano_compiler/build/nanoPython/CMakeFiles/list_install_components.dir
+/Users/caizhen/Desktop/Dev/nano_compiler/build/nanoPython/CMakeFiles/install.dir
+/Users/caizhen/Desktop/Dev/nano_compiler/build/nanoPython/CMakeFiles/install/local.dir
+/Users/caizhen/Desktop/Dev/nano_compiler/build/nanoPython/CMakeFiles/install/strip.dir
+/Users/caizhen/Desktop/Dev/nano_compiler/build/nanoPython/CMakeFiles/nanoPython_autogen_timestamp_deps.dir
+/Users/caizhen/Desktop/Dev/nano_compiler/build/nanoPython/CMakeFiles/nanoPython_autogen.dir

@@ -3,5 +3,6 @@
         <file>styles/default.qss</file>
         <file>templates/hello_world.py</file>
         <file>templates/calculator.py</file>
+        <file>images/me.jpg</file>
     </qresource>
 </RCC>

@@ -1,0 +1,28 @@
+{
+	"BUILD_DIR" : "/Users/caizhen/Desktop/Dev/nano_compiler/build/nanoC++/nanoC++_autogen",
+	"CMAKE_BINARY_DIR" : "/Users/caizhen/Desktop/Dev/nano_compiler/build/nanoC++",
+	"CMAKE_CURRENT_BINARY_DIR" : "/Users/caizhen/Desktop/Dev/nano_compiler/build/nanoC++",
+	"CMAKE_CURRENT_SOURCE_DIR" : "/Users/caizhen/Desktop/Dev/nano_compiler/nanoC++",
+	"CMAKE_SOURCE_DIR" : "/Users/caizhen/Desktop/Dev/nano_compiler/nanoC++",
+	"CROSS_CONFIG" : false,
+	"GENERATOR" : "Unix Makefiles",
+	"INCLUDE_DIR" : "/Users/caizhen/Desktop/Dev/nano_compiler/build/nanoC++/nanoC++_autogen/include",
+	"INPUTS" : 
+	[
+		"/Users/caizhen/Desktop/Dev/nano_compiler/nanoC++/resources/images/me.jpg",
+		"/Users/caizhen/Desktop/Dev/nano_compiler/nanoC++/resources/templates/hello_world.cpp",
+		"/Users/caizhen/Desktop/Dev/nano_compiler/nanoC++/resources/templates/hello_world.c",
+		"/Users/caizhen/Desktop/Dev/nano_compiler/nanoC++/resources/styles/default.qss"
+	],
+	"LOCK_FILE" : "/Users/caizhen/Desktop/Dev/nano_compiler/build/nanoC++/CMakeFiles/nanoC++_autogen.dir/AutoRcc_nanoC++_3YJK5W5UP7_Lock.lock",
+	"MULTI_CONFIG" : false,
+	"OPTIONS" : [ "-name", "nanoC++" ],
+	"OUTPUT_CHECKSUM" : "3YJK5W5UP7",
+	"OUTPUT_NAME" : "qrc_nanoC++.cpp",
+	"RCC_EXECUTABLE" : "/opt/homebrew/share/qt/libexec/rcc",
+	"RCC_LIST_OPTIONS" : [ "--list" ],
+	"SETTINGS_FILE" : "/Users/caizhen/Desktop/Dev/nano_compiler/build/nanoC++/CMakeFiles/nanoC++_autogen.dir/AutoRcc_nanoC++_3YJK5W5UP7_Used.txt",
+	"SOURCE" : "/Users/caizhen/Desktop/Dev/nano_compiler/nanoC++/resources/nanoC++.qrc",
+	"USE_BETTER_GRAPH" : true,
+	"VERBOSITY" : 0
+}

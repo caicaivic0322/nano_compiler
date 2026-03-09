@@ -61,7 +61,7 @@ private slots:
 
 private:
     void updateTabTitle(int index);
-    QString generateNewTabName() const;
+    QString generateNewTabName();
     
     QVector<TabInfo> m_tabInfo;
     int m_newTabCounter;

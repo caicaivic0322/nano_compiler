@@ -1,0 +1,9 @@
+/Users/caizhen/Desktop/Dev/nano_compiler/build/nanoC++/CMakeFiles/nanoC++.dir
+/Users/caizhen/Desktop/Dev/nano_compiler/build/nanoC++/CMakeFiles/edit_cache.dir
+/Users/caizhen/Desktop/Dev/nano_compiler/build/nanoC++/CMakeFiles/rebuild_cache.dir
+/Users/caizhen/Desktop/Dev/nano_compiler/build/nanoC++/CMakeFiles/list_install_components.dir
+/Users/caizhen/Desktop/Dev/nano_compiler/build/nanoC++/CMakeFiles/install.dir
+/Users/caizhen/Desktop/Dev/nano_compiler/build/nanoC++/CMakeFiles/install/local.dir
+/Users/caizhen/Desktop/Dev/nano_compiler/build/nanoC++/CMakeFiles/install/strip.dir
+/Users/caizhen/Desktop/Dev/nano_compiler/build/nanoC++/CMakeFiles/nanoC++_autogen_timestamp_deps.dir
+/Users/caizhen/Desktop/Dev/nano_compiler/build/nanoC++/CMakeFiles/nanoC++_autogen.dir

@@ -12,6 +12,22 @@
 #include <QMouseEvent>
 #include <QTimer>
 
+// LineNumberArea 实现
+LineNumberArea::LineNumberArea(CodeEditor *editor)
+    : QWidget(editor), m_codeEditor(editor)
+{
+}
+
+QSize LineNumberArea::sizeHint() const
+{
+    return QSize(m_codeEditor->lineNumberAreaWidth(), 0);
+}
+
+void LineNumberArea::paintEvent(QPaintEvent *event)
+{
+    m_codeEditor->lineNumberAreaPaintEvent(event);
+}
+
 CodeEditor::CodeEditor(QWidget *parent)
     : QPlainTextEdit(parent)
     , m_lineNumberArea(new LineNumberArea(this))
@@ -430,33 +446,41 @@ void CodeEditor::paintEvent(QPaintEvent *event)
 void LineNumberArea::mousePressEvent(QMouseEvent *event)
 {
     if (!m_codeEditor || !m_codeEditor->folding()) return;
-    
+
     int foldIndicatorWidth = m_codeEditor->folding()->foldIndicatorWidth();
-    
+
     // 检查是否点击了折叠指示器区域
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    if (event->position().x() <= foldIndicatorWidth + 5) {
+#else
     if (event->x() <= foldIndicatorWidth + 5) {
+#endif
         // 计算点击的行号
-        QTextBlock block = m_codeEditor->firstVisibleBlock();
+        QTextBlock block = m_codeEditor->getFirstVisibleBlock();
         int blockNumber = block.blockNumber();
-        int top = qRound(m_codeEditor->blockBoundingGeometry(block)
-                        .translated(m_codeEditor->contentOffset()).top());
-        int bottom = top + qRound(m_codeEditor->blockBoundingRect(block).height());
-        
+        int top = qRound(m_codeEditor->getBlockBoundingGeometry(block)
+                        .translated(m_codeEditor->getContentOffset()).top());
+        int bottom = top + qRound(m_codeEditor->getBlockBoundingRect(block).height());
+
         while (block.isValid()) {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+            if (event->position().y() >= top && event->position().y() < bottom) {
+#else
             if (event->y() >= top && event->y() < bottom) {
+#endif
                 // 检查这一行是否可以折叠
                 if (m_codeEditor->canFoldLine(blockNumber)) {
                     m_codeEditor->toggleFold(blockNumber);
                 }
                 break;
             }
-            
+
             block = block.next();
             top = bottom;
-            bottom = top + qRound(m_codeEditor->blockBoundingRect(block).height());
+            bottom = top + qRound(m_codeEditor->getBlockBoundingRect(block).height());
             ++blockNumber;
         }
     }
-    
+
     QWidget::mousePressEvent(event);
 }
