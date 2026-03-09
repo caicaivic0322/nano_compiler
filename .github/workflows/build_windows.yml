@@ -1,4 +1,4 @@
-name: Build Windows Installer
+name: Build Windows
 
 on:
   push:
@@ -16,8 +16,6 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
-      with:
-        submodules: recursive
     
     - name: Setup Qt
       uses: jurplel/install-qt-action@v3
@@ -27,44 +25,28 @@ jobs:
         target: 'desktop'
         arch: 'win64_msvc2019_64'
         modules: 'qtbase qttools'
-        tools: 'tools_cmake tools_ninja'
     
     - name: Setup MSVC
       uses: ilammy/msvc-dev-cmd@v1
       with:
         arch: x64
     
-    - name: Download TinyCC
-      run: |
-        mkdir -p third_party/tcc
-        curl -L -o tcc.zip https://github.com/TinyCC/tinycc/releases/download/tcc-0.9.27/tcc-0.9.27-win64-bin.zip
-        unzip tcc.zip -d third_party/tcc
-        rm tcc.zip
-      shell: bash
-    
-    - name: Download MicroPython
-      run: |
-        mkdir -p third_party/micropython
-        curl -L -o micropython.zip https://github.com/micropython/micropython/releases/download/v1.22.0/micropython-1.22.0-windows.zip
-        unzip micropython.zip -d third_party/micropython
-        rm micropython.zip
-      shell: bash
+    - name: Install Ninja
+      run: choco install ninja -y
     
     - name: Build nanoC++
       run: |
         mkdir build-nanoC++
         cd build-nanoC++
-        cmake ../nanoC++ -G "Ninja" -DCMAKE_BUILD_TYPE=Release
+        cmake ../nanoC++ -G "Ninja" -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$env:Qt6_DIR"
         ninja
-      shell: bash
     
     - name: Build nanoPython
       run: |
         mkdir build-nanoPython
         cd build-nanoPython
-        cmake ../nanoPython -G "Ninja" -DCMAKE_BUILD_TYPE=Release
+        cmake ../nanoPython -G "Ninja" -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$env:Qt6_DIR"
         ninja
-      shell: bash
     
     - name: Deploy Qt dependencies
       run: |
@@ -73,13 +55,9 @@ jobs:
     
     - name: Create distribution directory
       run: |
-        mkdir -p dist/nanoC++
-        mkdir -p dist/nanoPython
-        cp -r build-nanoC++/* dist/nanoC++/
-        cp -r build-nanoPython/* dist/nanoPython/
-        cp -r third_party/tcc dist/nanoC++/
-        cp -r third_party/micropython dist/nanoPython/
-      shell: bash
+        mkdir dist
+        cp -r build-nanoC++ dist/
+        cp -r build-nanoPython dist/
     
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
@@ -87,13 +65,3 @@ jobs:
         name: nanoCompiler-Windows
         path: dist/
         retention-days: 30
-    
-    - name: Create Release
-      if: startsWith(github.ref, 'refs/tags/')
-      uses: softprops/action-gh-release@v1
-      with:
-        files: |
-          dist/**
-        generate_release_notes: true
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
