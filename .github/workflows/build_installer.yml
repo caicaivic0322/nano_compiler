@@ -1,0 +1,106 @@
+name: Build Windows Installer Package
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build-installer:
+    runs-on: windows-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive
+    
+    - name: Setup Qt
+      uses: jurplel/install-qt-action@v3
+      with:
+        version: '6.6.0'
+        host: 'windows'
+        target: 'desktop'
+        arch: 'win64_msvc2019_64'
+        modules: 'qtbase qttools'
+        tools: 'tools_cmake tools_ninja'
+    
+    - name: Setup MSVC
+      uses: ilammy/msvc-dev-cmd@v1
+      with:
+        arch: x64
+    
+    - name: Install Inno Setup
+      run: |
+        choco install innosetup -y
+      shell: powershell
+    
+    - name: Download TinyCC
+      run: |
+        mkdir -p third_party/tcc
+        curl -L -o tcc.zip https://github.com/TinyCC/tinycc/releases/download/tcc-0.9.27/tcc-0.9.27-win64-bin.zip
+        unzip tcc.zip -d third_party/tcc
+        rm tcc.zip
+      shell: bash
+    
+    - name: Download MicroPython
+      run: |
+        mkdir -p third_party/micropython
+        curl -L -o micropython.zip https://github.com/micropython/micropython/releases/download/v1.22.0/micropython-1.22.0-windows.zip
+        unzip micropython.zip -d third_party/micropython
+        rm micropython.zip
+      shell: bash
+    
+    - name: Build nanoC++
+      run: |
+        mkdir build-nanoC++
+        cd build-nanoC++
+        cmake ../nanoC++ -G "Ninja" -DCMAKE_BUILD_TYPE=Release
+        ninja
+      shell: bash
+    
+    - name: Build nanoPython
+      run: |
+        mkdir build-nanoPython
+        cd build-nanoPython
+        cmake ../nanoPython -G "Ninja" -DCMAKE_BUILD_TYPE=Release
+        ninja
+      shell: bash
+    
+    - name: Deploy Qt dependencies
+      run: |
+        windeployqt build-nanoC++/nanoC++.exe --release --dir deploy/nanoC++
+        windeployqt build-nanoPython/nanoPython.exe --release --dir deploy/nanoPython
+    
+    - name: Copy executables
+      run: |
+        cp build-nanoC++/nanoC++.exe deploy/nanoC++/
+        cp build-nanoPython/nanoPython.exe deploy/nanoPython/
+      shell: bash
+    
+    - name: Copy third party tools
+      run: |
+        cp -r third_party/tcc deploy/
+        cp -r third_party/micropython deploy/
+      shell: bash
+    
+    - name: Build Installer
+      run: |
+        & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" installer/nano_compiler_setup.iss
+      shell: powershell
+    
+    - name: Upload Installer
+      uses: actions/upload-artifact@v4
+      with:
+        name: nanoCompiler-Installer
+        path: output/nanoCompiler_setup_*.exe
+        retention-days: 90
+    
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: output/nanoCompiler_setup_*.exe
+        generate_release_notes: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
