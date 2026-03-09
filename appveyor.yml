@@ -41,31 +41,35 @@ install:
 build_script:
   - mkdir build-nanoC++
   - cd build-nanoC++
-  - cmake ../nanoC++ -G "Visual Studio 17 2022" -A x64 -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=%QTDIR%
+  - cmake ..\nanoC++ -G "Visual Studio 17 2022" -A x64 -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=%QTDIR%
   - cmake --build . --config Release
   - cd ..
   - mkdir build-nanoPython
   - cd build-nanoPython
-  - cmake ../nanoPython -G "Visual Studio 17 2022" -A x64 -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=%QTDIR%
+  - cmake ..\nanoPython -G "Visual Studio 17 2022" -A x64 -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=%QTDIR%
   - cmake --build . --config Release
   - cd ..
-  - windeployqt build-nanoC++/Release/nanoC++.exe --release
-  - windeployqt build-nanoPython/Release/nanoPython.exe --release
+  - windeployqt build-nanoC++\Release\nanoC++.exe --release
+  - windeployqt build-nanoPython\Release\nanoPython.exe --release
 
 after_build:
-  # 列出目录结构查看实际路径
-  - dir build-nanoC++ /s
-  - dir build-nanoPython /s
+  # 显示当前目录
+  - cd
+  # 列出目录结构
+  - dir
   # 创建发布目录
   - mkdir deploy
   - mkdir deploy\nanoC++
   - mkdir deploy\nanoPython
-  # 复制可执行文件和依赖
-  - if exist "build-nanoC++\Release\nanoC++.exe" copy build-nanoC++\Release\nanoC++.exe deploy\nanoC++\
-  - if exist "build-nanoPython\Release\nanoPython.exe" copy build-nanoPython\Release\nanoPython.exe deploy\nanoPython\
-  # 复制整个 Release 目录内容
-  - if exist "build-nanoC++\Release" xcopy /E /I /Y build-nanoC++\Release deploy\nanoC++
-  - if exist "build-nanoPython\Release" xcopy /E /I /Y build-nanoPython\Release deploy\nanoPython
+  # 复制文件（使用完整路径）
+  - copy C:\projects\nano-compiler\build-nanoC++\Release\nanoC++.exe C:\projects\nano-compiler\deploy\nanoC++\
+  - copy C:\projects\nano-compiler\build-nanoPython\Release\nanoPython.exe C:\projects\nano-compiler\deploy\nanoPython\
+  # 复制整个 Release 目录
+  - xcopy /E /I /Y C:\projects\nano-compiler\build-nanoC++\Release C:\projects\nano-compiler\deploy\nanoC++
+  - xcopy /E /I /Y C:\projects\nano-compiler\build-nanoPython\Release C:\projects\nano-compiler\deploy\nanoPython
+  # 验证复制结果
+  - dir deploy\nanoC++
+  - dir deploy\nanoPython
 
 artifacts:
   - path: deploy
