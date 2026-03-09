@@ -31,33 +31,30 @@ jobs:
       with:
         arch: x64
     
-    - name: Install Ninja
-      run: choco install ninja -y
-    
-    - name: Build nanoC++
+    - name: Configure and Build nanoC++
       run: |
         mkdir build-nanoC++
         cd build-nanoC++
-        cmake ../nanoC++ -G "Ninja" -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$env:Qt6_DIR"
-        ninja
+        cmake ../nanoC++ -G "Visual Studio 17 2022" -A x64 -DCMAKE_BUILD_TYPE=Release
+        cmake --build . --config Release
     
-    - name: Build nanoPython
+    - name: Configure and Build nanoPython
       run: |
         mkdir build-nanoPython
         cd build-nanoPython
-        cmake ../nanoPython -G "Ninja" -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$env:Qt6_DIR"
-        ninja
+        cmake ../nanoPython -G "Visual Studio 17 2022" -A x64 -DCMAKE_BUILD_TYPE=Release
+        cmake --build . --config Release
     
     - name: Deploy Qt dependencies
       run: |
-        windeployqt build-nanoC++/nanoC++.exe --release
-        windeployqt build-nanoPython/nanoPython.exe --release
+        windeployqt build-nanoC++/Release/nanoC++.exe --release
+        windeployqt build-nanoPython/Release/nanoPython.exe --release
     
     - name: Create distribution directory
       run: |
         mkdir dist
-        cp -r build-nanoC++ dist/
-        cp -r build-nanoPython dist/
+        cp -r build-nanoC++/Release dist/nanoC++
+        cp -r build-nanoPython/Release dist/nanoPython
     
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
