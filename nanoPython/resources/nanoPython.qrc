@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>styles/default.qss</file>
+        <file>templates/hello_world.py</file>
+        <file>templates/calculator.py</file>
+    </qresource>
+</RCC>
